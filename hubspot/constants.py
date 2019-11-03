@@ -21,6 +21,8 @@ parameters = {}
 if 'API_KEY' in environ.keys():
     api_key = environ['API_KEY']
     parameters = {'hapikey': api_key}
+else:
+    print('No API_KEY')
 
 header = {'Content-Type': 'application/json'}
 oauth_header = {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
