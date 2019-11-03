@@ -2,17 +2,18 @@
 """...
 """
 from os import environ
+from os.path import getmtime
+from datetime import datetime
+import datetime
 
 
 def hubspot_timestamp_from_date(date_object):
-    from datetime import datetime
     date = datetime.fromisoformat(date_object)
     hubspot_timestamp = int(1000 * date.timestamp())
     return hubspot_timestamp
 
 
 def date_from_hubsport_timestamp(hubspot_timestamp):
-    from datetime import datetime
     date_time = datetime.fromtimestamp(int(hubspot_timestamp/1000))
     return date_time
 
@@ -23,6 +24,14 @@ if 'API_KEY' in environ.keys():
     parameters = {'hapikey': api_key}
 else:
     print('No API_KEY')
+try:
+    last = getmtime('/home/alxfed/alxfed/permits/token.txt')
+    now = datetime.datetime.now().timestamp()
+    if (now - last) >= 21600:
+        print('The token is probably not working')
+except:
+    print('No token file')
+    pass
 
 header = {'Content-Type': 'application/json'}
 oauth_header = {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
