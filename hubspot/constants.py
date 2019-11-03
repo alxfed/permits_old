@@ -28,7 +28,10 @@ try:
     last = getmtime('/home/alxfed/alxfed/permits/hubspot/authorization_token.txt')
     now = datetime.datetime.now().timestamp()
     if (now - last) >= 21600:
-        print('The token is probably not working. I am about to refresh it')
+        print('The token is not working. I am about to refresh it')
+        refre = input('y/n? ')
+        if refre.startswith('y'):
+            refresh = ''
 except:
     print('No token file')
     pass
