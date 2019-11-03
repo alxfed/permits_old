@@ -8,17 +8,30 @@ from os import environ
 
 # Get OAuth 2.0 Access Token and Refresh Tokens
 def get_oauth_token():
+    authorization_token = ''
     headers = constants.oauth_header
     client_id = environ['client_id']
     client_secret = environ['client_secret']
     redir = environ['redirect_uri']
     code = environ['code']
     data = f'grant_type=authorization_code&client_id={client_id}&client_secret={client_secret}&redirect_uri={redir}&code={code}'
-    response = requests.request('POST', url=constants.OAUTH_TOKEN_URL, data=data, headers=headers)
-    if response.status_code == 400:
+    res = requests.request('POST', url=constants.OAUTH_TOKEN_URL, data=data, headers=headers)
+    if res.status_code == 400:
         print('400')
         return
-    return response.json()
+    else:
+        response = res.json()
+        refresh_token_file = './refresh_token.txt'
+        authorization_token_file = './authorization_token.txt'
+        rtf = open(refresh_token_file, 'w')
+        refresh_token = response['refresh_token']
+        rtf.write(refresh_token)
+        rtf.close()
+        atf = open(authorization_token_file, 'w')
+        authorization_token = response['access_token']
+        atf.write(authorization_token)
+        atf.close()
+    return response
 
 
 def refresh_oauth_token():
