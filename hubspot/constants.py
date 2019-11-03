@@ -17,9 +17,11 @@ def date_from_hubsport_timestamp(hubspot_timestamp):
     return date_time
 
 
-api_key = environ['API_KEY']
-# portal_id = environ['PORTAL_ID']
-parameters = {'hapikey': api_key}
+parameters = {}
+if 'API_KEY' in environ.keys():
+    api_key = environ['API_KEY']
+    parameters = {'hapikey': api_key}
+
 header = {'Content-Type': 'application/json'}
 oauth_header = {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
 
