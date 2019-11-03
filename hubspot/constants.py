@@ -25,10 +25,10 @@ if 'API_KEY' in environ.keys():
 else:
     print('No API_KEY')
 try:
-    last = getmtime('/home/alxfed/alxfed/permits/token.txt')
+    last = getmtime('/home/alxfed/alxfed/permits/hubspot/authorization_token.txt')
     now = datetime.datetime.now().timestamp()
     if (now - last) >= 21600:
-        print('The token is probably not working')
+        print('The token is probably not working. I am about to refresh it')
 except:
     print('No token file')
     pass
