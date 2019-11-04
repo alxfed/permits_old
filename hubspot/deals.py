@@ -25,6 +25,26 @@ def create_a_deal(parameters, associations):
     return res
 
 
+def create_a_deal_oauth(parameters, associations):
+    data = {"associations": {},"properties": []}
+    data['associations'] = associations
+    res = {}
+    list_of_properties = []
+    for parameter in parameters:
+        prop = {"name": parameter,
+                "value": parameters[parameter]}
+        list_of_properties.append(prop)
+    data['properties'] = list_of_properties
+    response = requests.request("POST", url=constants.DEAL_URL, json=data,
+                                headers=constants.authorization_header)
+    if response.status_code == 200:
+        res = response.json()
+        print('deal for permit ', parameters['permit_'], ' created')
+    else:
+        print('not ok! ', response.status_code)
+    return res
+
+
 def get_a_deal(dealId):
     request_url = f'{constants.DEAL_URL}/{dealId}'
     response = requests.request('GET', url=request_url,
