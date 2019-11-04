@@ -34,11 +34,7 @@ def main():
                       'contact_7_type', 'contact_7_name', 'contact_7_city', 'contact_7_state', 'contact_7_zipcode',
                       'contact_8_type', 'contact_8_name', 'contact_8_city', 'contact_8_state', 'contact_8_zipcode',
                       'contact_9_type', 'contact_9_name', 'contact_9_city', 'contact_9_state', 'contact_9_zipcode',
-                      'contact_10_type', 'contact_10_name', 'contact_10_city', 'contact_10_state', 'contact_10_zipcode',
-                      'contact_11_type', 'contact_11_name', 'contact_11_city', 'contact_11_state', 'contact_11_zipcode',
-                      'contact_12_type', 'contact_12_name', 'contact_12_city', 'contact_12_state', 'contact_12_zipcode',
-                      'contact_13_type', 'contact_13_name', 'contact_13_city', 'contact_13_state', 'contact_13_zipcode',
-                      'contact_14_type', 'contact_14_name', 'contact_14_city', 'contact_14_state', 'contact_14_zipcode']
+                      'contact_10_type', 'contact_10_name', 'contact_10_city', 'contact_10_state', 'contact_10_zipcode']
 
     column_types = {'id': np.int, 'permit_': np.int,
                     'permit_type': object,

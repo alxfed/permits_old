@@ -43,7 +43,7 @@ def main():
 
     start_dt = dt.datetime(year=2019, month=10, day=18, hour=0, minute=0, second=0)
     start_str = start_dt.strftime('%Y-%m-%dT%H:%M:%S')
-    end_dt = dt.datetime(year=2019, month=11, day=4, hour=0, minute=0, second=0)
+    end_dt = dt.datetime(year=2019, month=11, day=5, hour=0, minute=0, second=0)
     end_str = end_dt.strftime('%Y-%m-%dT%H:%M:%S')
     api_call = api_url + f'?$where=issue_date between "{start_str}" and "{end_str}"'
 
@@ -58,19 +58,19 @@ def main():
         new_chunk['application_start_date'] = pd.to_datetime(new_chunk['application_start_date'])
         new_chunk['reported_cost'] = pd.to_numeric(new_chunk['reported_cost'], downcast='unsigned')
         data = data.append(new_chunk, sort=False, ignore_index = True)
-        if new_chunk.id.count() == limit:   # the number of items in the 'id' column which is never empty
+        if new_chunk.id.count() == limit:
             offset += limit
+            print('offset: ', offset)
         else:
             data_to_read_left = False
-    big_permits = data[data['reported_cost'] > 100000]
-    big_new_const_and_renov = data[data['permit_type'] == 'PERMIT - NEW CONSTRUCTION']
-    large_newconst = big_permits[big_permits['permit_type'] == 'PERMIT - NEW CONSTRUCTION']
-    large_newconst.to_csv('/media/alxfed/toca/presentation/current_large_newconst.csv', index=False)
-    large_newconst.to_json('/media/alxfed/toca/presentation/current_large_newconst.jl', orient='records', lines=True)
+    data.to_csv('/media/alxfed/toca/presentation/all_new_permits.csv', index=False)
+    data.to_json('/media/alxfed/toca/presentation/all_new_permits.jl', orient='records', lines=True)
+    new_construction = data[data['permit_type'] == 'PERMIT - NEW CONSTRUCTION']
+    new_construction.to_csv('/media/alxfed/toca/presentation/newconstruction.csv', index=False)
+    new_construction.to_json('/media/alxfed/toca/presentation/newconstruction.jl', orient='records', lines=True)
     renovation = data[data['permit_type'] == 'PERMIT - RENOVATION/ALTERATION']
-    large_renow = big_permits[big_permits['permit_type'] == 'PERMIT - RENOVATION/ALTERATION']
-    large_renow.to_csv('/media/alxfed/toca/presentation/current_large__renovation.csv', index=False)
-    large_renow.to_json('/media/alxfed/toca/presentation/current_large__renovation.jl', orient='records', lines=True)
+    renovation.to_csv('/media/alxfed/toca/presentation/renovationalt.csv', index=False)
+    renovation.to_json('/media/alxfed/toca/presentation/renovationalt.jl', orient='records', lines=True)
     return
 
 
@@ -78,15 +78,3 @@ if __name__ == '__main__':
     main()
     print('main - done')
 
-
-'''
-# long complex request
-
-api_request = f'{api_url}?${requ}={argu}'
-
-# but if the parameters of the query are already in a dictionary
-# then the trick is:
-
-person = {'name': 'Alex', 'age': 64}
-message = "Hello, {name}. You are {age}.".format(**person)
-'''

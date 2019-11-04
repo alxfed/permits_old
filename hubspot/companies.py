@@ -6,24 +6,25 @@ from . import constants
 
 
 def create_company(parameters):
+    """
+    :param parameters:  dictionary of company properties
+    :return:
+    """
     data = {"properties": []}
     list_of_properties = []
     for parameter in parameters:
-        prop = {"name" : parameter.key,
-                "value": parameter.value}
+        prop = {"name" : parameter,
+                "value": parameters[parameter]}
         list_of_properties.append(prop)
     data['properties'] = list_of_properties
-    response = requests.request("POST", url=COMPANIES_URL, json=data,
-                                headers=constants.header, params=constants.parameters)
+    response = requests.request("POST", url=constants.COMPANY_CREATE_URL, json=data,
+                                headers=constants.authorization_header, params=constants.parameters)
     if response.status_code == 200:
-        row.update({'companyId': response.json()['companyId']})
-        writeln(line_by_line_path, row_to_write=row)
-        output_rows.append(row)
-        indx += 1
-        print('ok', indx)
+        pass
     else:
         print('not ok! ', response.status_code)
-    return
+        return False
+    return True
 
 
 def update_company(companyId, parameters):
