@@ -16,7 +16,7 @@ try:
     now = datetime.datetime.now().timestamp()
     if (now - last) >= 18000:
         print('The token has expired. I am about to refresh it')
-        refre = input('y/n? ')
+        refre = 'y' # input('y/n? ')
         if refre.startswith('y'):
             res = oauth.refresh_oauth_token()
             if res:
