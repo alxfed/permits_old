@@ -32,7 +32,10 @@ def main():
             parameters['phone'] = contractor['phone']
             parameters['address'] = contractor['address']
             done = hubspot.companies.create_company(parameters)
-            print('Created ', parameters['name'])
+            if done:
+                print('Created ', parameters['name'])
+            else:
+                print('Did not create ', parameters['name'])
     return
 
 
