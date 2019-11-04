@@ -12,10 +12,6 @@ REFRESH_TOKEN_FILE          = '/home/alxfed/credo/refresh_token.txt'
 CLIENT_ID_FILE              = '/home/alxfed/credo/client_id.txt'
 CLIENT_SECRET_FILE          = '/home/alxfed/credo/client_secret.txt'
 
-token_file = open(AUTHORIZATION_TOKEN_FILE, 'r')
-authorization_token = token_file.read()
-token_file.close()
-
 parameters = {}
 if 'API_KEY' in environ.keys():
     api_key = environ['API_KEY']
@@ -23,8 +19,12 @@ if 'API_KEY' in environ.keys():
 else:
     print('No API_KEY')
 
+token_file = open(AUTHORIZATION_TOKEN_FILE, 'r')
+authorization_token = token_file.read()
+token_file.close()
+
 bearer_string = f'Bearer {authorization_token}'
-authorization_header = {'Authorization': bearer_string}
+authorization_header = {'Authorization': bearer_string, 'Content-Type': 'application/json'}
 header = {'Content-Type': 'application/json'}
 oauth_header = {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
 

@@ -136,11 +136,10 @@ def get_all_deals_oauth(request_parameters, include_associations):
     """
     # includeAssociations=true
     def make_parameters_string(include_associations, parameters_substring, offset, limit):
-        authentication = 'hapikey=' + constants.api_key
         associations = ''
         if include_associations:
-            associations = '&includeAssociations=true'
-        parameters_string = f'{authentication}{associations}{parameters_substring}&offset={offset}&limit={limit}'
+            associations = 'includeAssociations=true'
+        parameters_string = f'{associations}{parameters_substring}&offset={offset}&limit={limit}'
         return parameters_string
     # prepare for the inevitable output
     all_deals    = []
@@ -167,7 +166,7 @@ def get_all_deals_oauth(request_parameters, include_associations):
                                                         param_substring,
                                                         offset, limit)
                                  )
-        response = requests.request("GET", url=api_url, headers=constants.header)
+        response = requests.request("GET", url=api_url, headers=constants.authorization_header)
         if response.status_code == 200:
             res = response.json()
             has_more    = res['hasMore']

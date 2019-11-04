@@ -6,11 +6,13 @@ import csv
 
 
 def main():
+    '''
     authorization_token_file = '/home/alxfed/credo/authorization_token.txt'
     authorization_token = ''
     authorization_file = open(authorization_token_file, 'r')
     authorization_token = authorization_file.read()
     authorization_file.close()
+    '''
     stage_values_to_names = {'815586': 'Permit Issued',
                              '192335': 'Received layout - Make Quote',
                              '304544': 'Ready for production',

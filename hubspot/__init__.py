@@ -10,11 +10,7 @@ def main():
 
 
 parameters = {}
-if 'API_KEY' in environ.keys():
-    api_key = environ['API_KEY']
-    parameters = {'hapikey': api_key}
-else:
-    print('No API_KEY')
+
 try:
     last = getmtime(AUTHORIZATION_TOKEN_FILE)
     now = datetime.datetime.now().timestamp()
