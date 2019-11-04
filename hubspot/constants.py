@@ -6,17 +6,15 @@ from os.path import getmtime
 from datetime import datetime
 import datetime
 
+# files
+AUTHORIZATION_TOKEN_FILE    = '/home/alxfed/credo/authorization_token.txt'
+REFRESH_TOKEN_FILE          = '/home/alxfed/credo/refresh_token.txt'
+CLIENT_ID_FILE              = '/home/alxfed/credo/client_id.txt'
+CLIENT_SECRET_FILE          = '/home/alxfed/credo/client_secret.txt'
 
-def hubspot_timestamp_from_date(date_object):
-    date = datetime.fromisoformat(date_object)
-    hubspot_timestamp = int(1000 * date.timestamp())
-    return hubspot_timestamp
-
-
-def date_from_hubsport_timestamp(hubspot_timestamp):
-    date_time = datetime.fromtimestamp(int(hubspot_timestamp/1000))
-    return date_time
-
+token_file = open(AUTHORIZATION_TOKEN_FILE, 'r')
+authorization_token = token_file.read()
+token_file.close()
 
 parameters = {}
 if 'API_KEY' in environ.keys():
@@ -24,18 +22,9 @@ if 'API_KEY' in environ.keys():
     parameters = {'hapikey': api_key}
 else:
     print('No API_KEY')
-try:
-    last = getmtime('/home/alxfed/alxfed/permits/hubspot/authorization_token.txt')
-    now = datetime.datetime.now().timestamp()
-    if (now - last) >= 21600:
-        print('The token is not working. I am about to refresh it')
-        refre = input('y/n? ')
-        if refre.startswith('y'):
-            refresh = ''
-except:
-    print('No token file')
-    pass
 
+bearer_string = f'Bearer {authorization_token}'
+authorization_header = {'Authorization': bearer_string}
 header = {'Content-Type': 'application/json'}
 oauth_header = {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
 
