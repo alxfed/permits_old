@@ -41,13 +41,16 @@ def main():
     """
     data = pd.DataFrame()
 
-    start_dt = dt.datetime(year=2018, month=1, day=1, hour=0, minute=0, second=0)
+    start_dt = dt.datetime(year=2017, month=1, day=1, hour=0, minute=0, second=0)
     start_str = start_dt.strftime('%Y-%m-%dT%H:%M:%S')
     end_dt = dt.datetime(year=2019, month=11, day=4, hour=0, minute=0, second=0)
     end_str = end_dt.strftime('%Y-%m-%dT%H:%M:%S')
-    api_call = api_url + f'?$where=license_start_date between "{start_str}" and "{end_str}"'
+    # license_status=AAI
+    query_string='ONE STOP LOANS'
+    # api_call = api_url + f'?$where=license_start_date between "{start_str}" and "{end_str}"'
+    api_call = api_url + f'?$q={query_string}'
 
-    limit = 100  # limit of the frame within the time window
+    limit = 5000  # limit of the frame within the time window
     offset = 0
     data_to_read_left = True
 
