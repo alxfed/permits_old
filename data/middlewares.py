@@ -16,7 +16,7 @@ import re
 from os import environ
 
 options = webdriver.ChromeOptions()
-# options.add_argument('headless')
+options.add_argument('headless')
 options.add_argument('window-size=1920x1080')
 options.binary_location = '/usr/bin/google-chrome'
 browser = webdriver.Chrome(executable_path='/opt/google/chrome/chromedriver', chrome_options=options)
