@@ -40,8 +40,12 @@ CONTACT_SEARCH_QUERY_URL = 'https://api.hubapi.com/contacts/v1/search/query?q='
 
 ASSOCIATIONS_URL    = 'https://api.hubapi.com/crm-associations/v1/associations'
 
+ENGAGEMENTS_URL     = 'https://api.hubapi.com/engagements/v1/engagements'
+
 DEALS_ALL_URL       = 'https://api.hubapi.com/deals/v1/deal/paged'
 DEAL_URL            = 'https://api.hubapi.com/deals/v1/deal'
+
+OWNERS_URL          = 'https://api.hubapi.com/owners/v2/owners'
 
 # deals stages in the Sales Pipeline
 sales_stages = {'Clients (come in )': '904851',

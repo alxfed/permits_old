@@ -5,45 +5,35 @@ import requests
 from . import constants
 
 
-def create_engagement(parameters):
+def create_engagement_note(parameters):
     data = {"engagement": {
                     "active": 'true',
-                    "ownerId": 1,
+                    "ownerId": parameters['ownerId'],
                     "type": "NOTE",
-                    "timestamp": 1409172644778
+                    "timestamp": parameters['timestamp']
                 },
                 "associations": {
-                    "contactIds": [2],
-                    "companyIds": [ ],
-                    "dealIds": [ ],
-                    "ownerIds": [ ]
+                    "contactIds": [],
+                    "companyIds": [],
+                    "dealIds": [parameters['dealId']],
+                    "ownerIds": [parameters['ownerId']]
                 },
                 "attachments": [
                     {
-                        "id": 4241968539
+                        "id": ''
                     }
                 ],
                 "metadata": {
-                    "body": ""
+                    "body": parameters['note']
                 }
             }
-    list_of_properties = []
-    for key in row:
-        prop = {"name": hubspot_mapping[key],
-                "value": row[key]}
-        list_of_properties.append(prop)
-    data['properties'] = list_of_properties
-    response = requests.request("POST", url=COMPANIES_URL, json=data,
-                                headers=constants.header, params=constants.parameters)
+
+    response = requests.request("POST", url=constants.ENGAGEMENTS_URL, json=data,
+                                headers=constants.authorization_header)
     if response.status_code == 200:
-        row.update({'companyId': response.json()['companyId']})
-        writeln(line_by_line_path, row_to_write=row)
-        output_rows.append(row)
-        indx += 1
-        print('ok', indx)
+        print('Created a note to deal ', parameters['dealId'])
     else:
         print('not ok! ', response.status_code)
-
     return
 
 
