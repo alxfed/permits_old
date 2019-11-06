@@ -19,6 +19,9 @@ if 'API_KEY' in environ.keys():
 else:
     print('No API_KEY')
 
+token_file = open(AUTHORIZATION_TOKEN_FILE, 'r')
+authorization_token = token_file.read()
+token_file.close()
 
 bearer_string = f'Bearer {authorization_token}'
 authorization_header = {'Authorization': bearer_string, 'Content-Type': 'application/json'}
