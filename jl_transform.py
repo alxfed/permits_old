@@ -15,8 +15,8 @@ def write_pd_to_jl(data, outfile):
 
 def main():
     # renovation_alteration_scraped.jl
-    INP_FILE = '/home/alxfed/dbase/new_construction_scraped.jl'
-    OUT_FILE = '/home/alxfed/dbase/new_construction_procssd.jl'
+    INP_FILE = '/home/alxfed/archive/deals_inspections.jl'
+    OUT_FILE = '/home/alxfed/archive/deal_inspections_procssd.jl'
     insp_types = ['BOILER ANNUAL INSPECTION', 'FIRE PREVENTION PUMPS LEGACY', 'PERMIT INSPECTION',
                   'CONST EQ COMPLAINT INSPECTION', 'PLUMBING INSPECTION', 'ELEVATOR LEGACY INSPECTION',
                   'PLUMBING COMPLAINT INSPECTION', 'DOB GARAGE INSPECTION', 'SIGN LEGACY INSPECTION',
@@ -51,6 +51,13 @@ def main():
                        'PUMP ACCEPTANCE TEST', 'ELECTRICAL PERMIT INSPECTION', 'REFIGERATION COMPLAINT INSPECT',
                        'STRUCTURAL SIGN INSPECTION', 'PERMIT INSPECTION', 'COMPLAINT INSPECTION',
                        'SIGN ANNUAL INSPECTION']
+
+    permit_inspections = ['PERMIT INSPECTION', 'BLDG_PERM IRON PERMIT INSP', 'VENT/HEAT PERMIT INSPECTION',
+                          'WATER DEPT PERMIT INSPECTION', 'ELECTRICAL PERMIT INSPECTION', 'CONSTRUCTION EQUIPMENT PERMIT',
+                          'PORCH/DECK PERMIT INSPECTION', 'BLDG_PERM IRON PERMIT INSP', 'BOILER PERMIT INSPECTION',
+                          'DOB NEW CONSTRUCTION INSP', 'DOB PLUMBING INSPECTION', 'DOB VENT/FURNACE INSPECTION',
+                          'DOB REFRIGERATION INSPECTION', 'DOB GARAGE INSPECTION',
+                          'EQUIPMENT INSPECTION']
     #df = read_into_pd(INP_FILE)
     #res = write_pd_to_jl(df, OUT_FILE)
     with jsonlines.open(INP_FILE, mode='r') as reader:
@@ -60,7 +67,10 @@ def main():
                 input_address = line['input_address']
                 range_address = line['range_address']
                 insp_table = pd.DataFrame.from_records(line['insp_table'])
+                insp_table['insp_date'] = pd.to_datetime(insp_table['insp_date'], infer_datetime_format=True)
                 perm_table = pd.DataFrame.from_records(line['perm_table'])
+                perm_table['perm_date'] = pd.to_datetime(perm_table['perm_date'], infer_datetime_format=True)
+                permit = perm_table.iloc[0]
                 # transform
                 writer.write(line)
         writer.close()

@@ -76,6 +76,7 @@ class InspListCSpider(CSVFeedSpider):
         insp_list = []
         table_line.update({'full_address': kwargs['full_address'],
                            'input_address': kwargs['full_address'],
+                           'permit': kwargs['permit_n'],
                            'range_address': '',
                            'perm_table': '',
                            'insp_table': ''})

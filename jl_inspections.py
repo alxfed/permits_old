@@ -15,8 +15,8 @@ def write_pd_to_jl(data, outfile):
 
 def main():
     # renovation_alteration_scraped.jl
-    INP_FILE = '/home/alxfed/dbase/renovation_alteration_scraped.jl'
-    OUT_FILE = '/home/alxfed/dbase/inspections.jl'
+    INP_FILE = '/home/alxfed/archive/deal_inspections.jl'
+    OUT_FILE = '/home/alxfed/archive/inspections.jl'
     #df = read_into_pd(INP_FILE)
     #res = write_pd_to_jl(df, OUT_FILE)
     results = set()
