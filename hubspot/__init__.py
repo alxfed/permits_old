@@ -27,6 +27,10 @@ except:
     print('No token file')
     pass
 
+token_file = open(AUTHORIZATION_TOKEN_FILE, 'r')
+authorization_token = token_file.read()
+token_file.close()
+
 
 if __name__ == '__main__':
     main()

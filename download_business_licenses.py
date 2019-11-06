@@ -46,7 +46,15 @@ def main():
     end_dt = dt.datetime(year=2019, month=11, day=4, hour=0, minute=0, second=0)
     end_str = end_dt.strftime('%Y-%m-%dT%H:%M:%S')
     # license_status=AAI , expiration_date=
-    full_text_query_string='ONE STOP LOANS'
+    # Home Repair Services, Miscellaneous Commercial Services,
+    # Residential Construction | Commercial Construction
+    # Acquisition and Improvement of Land/Residential Buildings
+    # Heating, Ventilation and Air Conditioning Services - Residential
+    # Residential Real Estate Developer (Home Occ) | Home Repair Services (Home Occ)
+    # Residential Remodeling and Repair (Home Occ)
+    # Home Repair Services (Home Occ)
+    #
+    full_text_query_string='HONG'
     # api_call = api_url + f'?$where=license_start_date between "{start_str}" and "{end_str}"'
     api_call = api_url + '?license_status=AAI' + f'&$q={full_text_query_string}' #  + ' AND ' + ''
     # https://data.cityofchicago.org/resource/tt4n-kn4t.json?$where=job_titles like '%25CHIEF%25'

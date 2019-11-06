@@ -14,15 +14,10 @@ def main():
     authorization_file.close()
     '''
     stage_values_to_names = {'815586': 'Permit Issued',
-                             '192335': 'Received layout - Make Quote',
-                             '304544': 'Ready for production',
-                             '904851': 'Clients (come in)',
-                             '874022': 'Uploaded',
                              '815587': 'General Contractor Contacted',
-                             'a17034a6-c5ef-4442-838d-c65f94c85ebd': 'Quote sent out',
-                             '0899a41f-47bc-4eb7-b524-20f330e4afd0': 'In production',
-                             'bd8039e1-8b13-4840-a5cb-95c9aff3067c': 'Received layout - Make quote',
-                             '874023': 'Company / Contacts contacted'}
+                             '815588': 'Contact Info obtained. Won',
+                             '815589': 'Not interested. Lost'}
+
     DOWNLOADED_DEALS_FILE_PATH = '/home/alxfed/archive/deals_downloaded.csv'
     request_params = ['dealname', 'closedate', 'amount', 'pipeline', 'dealstage',
                       'permit_issue_date', 'permit_', 'permit', 'permit_type',
