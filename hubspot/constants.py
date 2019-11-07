@@ -16,8 +16,6 @@ parameters = {}
 if 'API_KEY' in environ.keys():
     api_key = environ['API_KEY']
     parameters = {'hapikey': api_key}
-else:
-    print('No API_KEY')
 
 token_file = open(AUTHORIZATION_TOKEN_FILE, 'r')
 authorization_token = token_file.read()
