@@ -3,6 +3,7 @@
 """
 import pandas as pd
 import hubspot
+import datetime
 
 
 def main():
@@ -23,8 +24,8 @@ def main():
     for index, engagement_to_update in update_table.iterrows():
         engagementId = engagement_to_update['id']
         gotten = hubspot.engagements.get_an_engagement(engagementId)
-        parameters['amount'] = 1000
-        parameters['dealname'] = 'New name of the deal'
+        gokeys = gotten.keys()
+        parameters['timestamp'] = int(datetime.datetime.now().timestamp()*1000)
         updated = hubspot.engagements.update_an_engagement(engagementId, parameters)
         print('ok')
     return
