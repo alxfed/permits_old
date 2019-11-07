@@ -5,6 +5,50 @@ import requests
 from . import constants
 
 
+def parse_engagement_response(one_result):
+    data = {}
+    engagement      = one_result['engagement']
+    associations    = one_result['associations']
+    attachments     = one_result['attachments']
+    metadata        = one_result['metadata']
+    # engagement
+    for key in engagement.keys:
+        data.update({key: one_result[key]})
+    # associations
+    for key in associations.keys:
+        data.update({key: ' '.join(map(str, associations['contactIds']))})
+    # attachments
+    data.update({'attachments': ' '.join(map(str, attachments))})
+    # metadata
+    data.update({'metadata': metadata})
+    return data
+
+
+def package_engagement_data(data):
+    engagement = {"engagement": {
+        "active": 'true',
+        "ownerId": parameters['ownerId'],
+        "type": "NOTE",
+        "timestamp": parameters['timestamp']
+    },
+        "associations": {
+            "contactIds": [],
+            "companyIds": [],
+            "dealIds": [parameters['dealId']],
+            "ownerIds": [parameters['ownerId']]
+        },
+        "attachments": [
+            {
+                "id": ''
+            }
+        ],
+        "metadata": {
+            "body": parameters['note']
+        }
+    }
+    return engagement
+
+
 def create_engagement_note(parameters):
     data = {"engagement": {
                     "active": 'true',
@@ -38,19 +82,28 @@ def create_engagement_note(parameters):
 
 
 def get_an_engagement(engagementId):
-    res = {}
+    data = {}
     api_uri = constants.ENGAGEMENTS_URL + f'/{engagementId}'
     response = requests.request("GET", url=api_uri, headers=constants.authorization_header)
     if response.status_code == 200:
-        res = response.json()
+        data = parse_engagement_response(response.json())
     else:
         print('Not ok: ', response.status_code)
-    return res
+    return data
 
 
 def update_an_engagement(engagementId, parameters):
     updated = True
     return updated
+
+
+def deleta_an_engagement(engagementId):
+    outcome = False
+    api_uri = constants.ENGAGEMENTS_URL + f'/{engagementId}'
+    response = requests.request("DELETE", url=api_uri, headers=constants.authorization_header)
+    if response.status_code == 200:
+        outcome = True
+    return outcome
 
 
 def get_all_engagements_oauth():
@@ -113,12 +166,6 @@ def get_all_engagements_oauth():
             print(response.status_code)
     return all_engagements, all_columns
 
-'''
-"createdBy", "modifiedBy", "ownerId",
-                            "createdBy"     : engagement["createdBy"],
-                            "modifiedBy"    : engagement["modifiedBy"],
-                            "ownerId"       : engagement["ownerId"],
-'''
 
 def main():
     return

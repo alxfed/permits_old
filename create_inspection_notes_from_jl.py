@@ -30,7 +30,10 @@ def main():
                 perm_table = pd.DataFrame.from_records(line['perm_table'])
                 perm_table['perm_date'] = pd.to_datetime(perm_table['perm_date'], infer_datetime_format=True)
                 permeat = perm_table.loc[perm_table['permit_n'] == permit]
-
+                date = permeat['perm_date'].values[0]
+                insp_table = pd.DataFrame.from_records(line['insp_table'])
+                insp_table['insp_date'] = pd.to_datetime(insp_table['insp_date'], infer_datetime_format=True)
+                post_permit = insp_table[insp_table['insp_date'] >= date]
                 dealId = 1143450728
                 note_date = dt.datetime(year=2019, month=10, day=18, hour=0, minute=0, second=0)
                 hubspot_timestamp = int(note_date.timestamp() * 1000)
@@ -39,8 +42,6 @@ def main():
                           'note': note_text}
                 res = hubspot.engagements.create_engagement_note(params)
 
-                insp_table = pd.DataFrame.from_records(line['insp_table'])
-                insp_table['insp_date'] = pd.to_datetime(insp_table['insp_date'], infer_datetime_format=True)
                 tab = insp_table.to_html(index=False)
                 # transform
                 writer.write(line)
