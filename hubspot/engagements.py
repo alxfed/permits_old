@@ -12,11 +12,11 @@ def parse_engagement_response(one_result):
     attachments     = one_result['attachments']
     metadata        = one_result['metadata']
     # engagement
-    for key in engagement.keys:
-        data.update({key: one_result[key]})
+    for key in engagement:
+        data.update({key: engagement[key]})
     # associations
-    for key in associations.keys:
-        data.update({key: ' '.join(map(str, associations['contactIds']))})
+    for key in associations:
+        data.update({key: ' '.join(map(str, associations[key]))})
     # attachments
     data.update({'attachments': ' '.join(map(str, attachments))})
     # metadata
@@ -27,15 +27,15 @@ def parse_engagement_response(one_result):
 def package_engagement_data(data):
     engagement = {"engagement": {
         "active": 'true',
-        "ownerId": parameters['ownerId'],
+        "ownerId": data['ownerId'],
         "type": "NOTE",
-        "timestamp": parameters['timestamp']
+        "timestamp": data['timestamp']
     },
         "associations": {
             "contactIds": [],
             "companyIds": [],
-            "dealIds": [parameters['dealId']],
-            "ownerIds": [parameters['ownerId']]
+            "dealIds": [data['dealId']],
+            "ownerIds": [data['ownerId']]
         },
         "attachments": [
             {
@@ -43,7 +43,7 @@ def package_engagement_data(data):
             }
         ],
         "metadata": {
-            "body": parameters['note']
+            "body": data['note']
         }
     }
     return engagement
@@ -97,7 +97,7 @@ def update_an_engagement(engagementId, parameters):
     return updated
 
 
-def deleta_an_engagement(engagementId):
+def delete_an_engagement(engagementId):
     outcome = False
     api_uri = constants.ENGAGEMENTS_URL + f'/{engagementId}'
     response = requests.request("DELETE", url=api_uri, headers=constants.authorization_header)
