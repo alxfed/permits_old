@@ -37,6 +37,21 @@ def create_engagement_note(parameters):
     return
 
 
+def get_an_engagement(engagementId):
+    api_uri = constants.ENGAGEMENTS_URL + f'/{engagementId}'
+    response = requests.request("GET", url=api_uri, headers=constants.authorization_header)
+    if response.status_code == 200:
+        res = response.json()
+    else:
+        print('Not ok: ', response.status_code)
+    return
+
+
+def update_an_engagement(engagementId, parameters):
+    updated = True
+    return updated
+
+
 def get_all_engagements_oauth():
     """Downloads the complete list of engagements from the portal
     :return all_engagements: list of dictionaries
