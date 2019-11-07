@@ -38,13 +38,14 @@ def create_engagement_note(parameters):
 
 
 def get_an_engagement(engagementId):
+    res = {}
     api_uri = constants.ENGAGEMENTS_URL + f'/{engagementId}'
     response = requests.request("GET", url=api_uri, headers=constants.authorization_header)
     if response.status_code == 200:
         res = response.json()
     else:
         print('Not ok: ', response.status_code)
-    return
+    return res
 
 
 def update_an_engagement(engagementId, parameters):
