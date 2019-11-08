@@ -75,6 +75,23 @@ def update_a_deal(dealId, parameters):
         return
 
 
+def update_a_deal_oauth(dealId, parameters):
+    request_url = f'{constants.DEAL_URL}/{dealId}'
+    properties = {"properties": []}
+    for key in parameters:
+        properties['properties'].append({'name': key, 'value': parameters[key]})
+    response = requests.request('PUT', url=request_url,
+                                headers=constants.authorization_header,
+                                json=properties)
+    if response.status_code == 200:
+        resp = response.json()
+        return resp
+    else:
+        print(response.status_code)
+        return
+
+
+
 def get_all_deals(request_parameters, include_associations):
     """Downloads the complete list of deals from the portal
     :param request_parameters: list of Deal parameters

@@ -10,8 +10,9 @@ from tabulate import tabulate
 
 def main():
     INP_FILE = '/home/alxfed/archive/deals_inspections.jl'
-    OUT_FILE = '/home/alxfed/archive/inspections_procssd.jl'
+    OUT_FILE = '/home/alxfed/archive/inspections_notes_created.jl'
     reference_file_path = '/home/alxfed/archive/deals_downloaded.csv'
+    all_deals = pd.read_csv(reference_file_path, dtype=object)
     ownerId = 40202623  # Data Robot
 
     permit_inspections = ['PERMIT INSPECTION', 'BLDG_PERM IRON PERMIT INSP', 'VENT/HEAT PERMIT INSPECTION',
@@ -28,6 +29,9 @@ def main():
                 input_address = line['input_address']
                 range_address = line['range_address']
                 permit = line['permit']
+                # get deal parameter from the reference
+                deal_line = all_deals[all_deals['permit_'] == permit]
+                dealId = deal_line['dealId'].values[0] # 1143450728
                 perm_table = pd.DataFrame.from_records(line['perm_table'])
                 perm_table['perm_date'] = pd.to_datetime(perm_table['perm_date'], infer_datetime_format=True)
                 permeat = perm_table.loc[perm_table['permit_n'] == permit]
@@ -35,22 +39,25 @@ def main():
                 insp_table = pd.DataFrame.from_records(line['insp_table'])
                 insp_table['insp_date'] = pd.to_datetime(insp_table['insp_date'], infer_datetime_format=True)
                 post_permit = insp_table[insp_table['insp_date'] >= date]
-                last_inspection_datetime = post_permit.iloc[0]['insp_date']
-                post_permit['insp_date'] = post_permit['insp_date'].dt.strftime('%Y-%m-%d')
-                # note_text = 'Inspections: \n________\n' + tabulate(post_permit,  showindex='never', tablefmt='plain')
-                note_text = post_permit.to_html(header=False, index=False)
-                print(note_text)
-                dealId = 1143450728
-                # note_date = dt.datetime(year=2019, month=10, day=18, hour=0, minute=0, second=0)
+                last_inspection = post_permit.iloc[0]
+                last_inspection_datetime = last_inspection['insp_date']
+                last_inspection_number = last_inspection['insp_n']
+                last_inspection_type = last_inspection['type_desc']
                 hubspot_timestamp = int(last_inspection_datetime.timestamp() * 1000)
-                # note_text = permeat.to_string(index=False)
+                # update the deal parameters last_inspection and last_inspection_date here
+                result = hubspot.deals.update_a_deal_oauth(dealId, {'last_inspection': last_inspection_type.title(),
+                                                                    'last_inspection_date': hubspot_timestamp})
+                post_permit['insp_date'] = post_permit['insp_date'].dt.strftime('%Y-%m-%d')
+                note_text = post_permit.to_html(header=False, index=False)
                 params = {'ownerId': ownerId, 'timestamp': hubspot_timestamp, 'dealId': dealId,
                           'note': note_text}
-                res = hubspot.engagements.create_engagement_note(params)
-
-                tab = insp_table.to_html(index=False)
+                created_note = hubspot.engagements.create_engagement_note(params)
+                engagement = created_note['engagement']
+                engagement.update({'permit': permit, 'dealId': dealId,
+                                   'insp_n': last_inspection_number, 'insp_date': hubspot_timestamp,
+                                   'insp_type': last_inspection_type})
                 # transform
-                writer.write(line)
+                writer.write(engagement)
         writer.close()
     reader.close()
     return
