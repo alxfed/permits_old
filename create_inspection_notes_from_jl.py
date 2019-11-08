@@ -5,6 +5,7 @@ import jsonlines
 import pandas as pd
 import hubspot
 import datetime as dt
+from tabulate import tabulate
 
 
 def main():
@@ -34,10 +35,15 @@ def main():
                 insp_table = pd.DataFrame.from_records(line['insp_table'])
                 insp_table['insp_date'] = pd.to_datetime(insp_table['insp_date'], infer_datetime_format=True)
                 post_permit = insp_table[insp_table['insp_date'] >= date]
+                last_inspection_datetime = post_permit.iloc[0]['insp_date']
+                post_permit['insp_date'] = post_permit['insp_date'].dt.strftime('%Y-%m-%d')
+                # note_text = 'Inspections: \n________\n' + tabulate(post_permit,  showindex='never', tablefmt='plain')
+                note_text = post_permit.to_html(header=False, index=False)
+                print(note_text)
                 dealId = 1143450728
-                note_date = dt.datetime(year=2019, month=10, day=18, hour=0, minute=0, second=0)
-                hubspot_timestamp = int(note_date.timestamp() * 1000)
-                note_text = permeat.to_string(index=False)
+                # note_date = dt.datetime(year=2019, month=10, day=18, hour=0, minute=0, second=0)
+                hubspot_timestamp = int(last_inspection_datetime.timestamp() * 1000)
+                # note_text = permeat.to_string(index=False)
                 params = {'ownerId': ownerId, 'timestamp': hubspot_timestamp, 'dealId': dealId,
                           'note': note_text}
                 res = hubspot.engagements.create_engagement_note(params)

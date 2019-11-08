@@ -50,6 +50,7 @@ def package_engagement_data(data):
 
 
 def create_engagement_note(parameters):
+    created_note = {}
     data = {"engagement": {
                     "active": 'true',
                     "ownerId": parameters['ownerId'],
@@ -75,10 +76,11 @@ def create_engagement_note(parameters):
     response = requests.request("POST", url=constants.ENGAGEMENTS_URL, json=data,
                                 headers=constants.authorization_header)
     if response.status_code == 200:
+        created_note = response.json()
         print('Created a note to deal ', parameters['dealId'])
     else:
         print('not ok! ', response.status_code)
-    return
+    return created_note
 
 
 def get_an_engagement(engagementId):
