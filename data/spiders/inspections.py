@@ -37,7 +37,7 @@ def not_found(response):
 class InspListCSpider(CSVFeedSpider):
     name = 'inspections'
     allowed_domains = ['webapps1.chicago.gov']
-    start_urls = ['file:///home/alxfed/archive/deals_downloaded.csv']
+    start_urls = ['file:///home/alxfed/archive/deals_to_inspect.csv']
     headers = ['dealId', 'isDeleted', 'associatedVids', 'associatedTicketIds', 'associatedCompanyIds',
                'associatedDealIds', 'dealname', 'closedate', 'amount', 'pipeline', 'dealstage',
                'permit_issue_date', 'permit_', 'permit', 'permit_type', 'work_descrption']

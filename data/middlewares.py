@@ -131,7 +131,7 @@ class DataDownloaderMiddleware(object):
             assert "Building Permit and Inspection Records" in browser.title
             text_box = browser.find_element_by_id('fullAddress')
             text_box.send_keys(address + Keys.RETURN)
-            sleep(1)
+            sleep(2)
             where_i_am_now = browser.current_url
             body = browser.page_source
             # minify html
@@ -146,10 +146,10 @@ class DataDownloaderMiddleware(object):
             if request.url.endswith('module=search'):
                 if not searched_same:
                     browser.get(request.url)
-                    sleep(1)
+                    sleep(2)
                     drop_down = Select(browser.find_element_by_id('search_type'))
                     drop_down.select_by_value('MEMBER')
-                    sleep(1)
+                    sleep(2)
             browser.get(request.url)
             where_i_am_now = browser.current_url
             body = browser.page_source
