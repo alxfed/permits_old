@@ -45,10 +45,14 @@ def main():
                     elif 'insp_date' in insp_table.keys():
                         insp_table['insp_date'] = pd.to_datetime(insp_table['insp_date'], infer_datetime_format=True)
                         post_permit = insp_table[insp_table['insp_date'] >= date]
-                        last_inspection = post_permit.iloc[0]
-                        last_inspection_datetime = last_inspection['insp_date']
-                        last_inspection_number = last_inspection['insp_n']
-                        last_inspection_type = last_inspection['type_desc']
+                        if not post_permit.empty:
+                            last_inspection = post_permit.iloc[0]
+                            last_inspection_datetime = last_inspection['insp_date']
+                            last_inspection_number = last_inspection['insp_n']
+                            last_inspection_type = last_inspection['type_desc']
+                        else:
+                            print('No inspections after permit for deal', dealId)
+                            have_data = False
                     else:
                         post_permit = insp_table
                         last_inspection = post_permit.iloc[0]
