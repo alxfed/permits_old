@@ -41,12 +41,20 @@ def main():
                     permeat = perm_table.loc[perm_table['permit_n'] == permit]
                     date = permeat['perm_date'].values[0]
                     insp_table = pd.DataFrame.from_records(line['insp_table'])
-                    insp_table['insp_date'] = pd.to_datetime(insp_table['insp_date'], infer_datetime_format=True)
-                    post_permit = insp_table[insp_table['insp_date'] >= date]
-                    last_inspection = post_permit.iloc[0]
-                    last_inspection_datetime = last_inspection['insp_date']
-                    last_inspection_number = last_inspection['insp_n']
-                    last_inspection_type = last_inspection['type_desc']
+                    if insp_table.empty:
+                        print('No data about inspections for deal', dealId)
+                        break
+                    elif 'insp_date' in insp_table.keys():
+                        insp_table['insp_date'] = pd.to_datetime(insp_table['insp_date'], infer_datetime_format=True)
+                        post_permit = insp_table[insp_table['insp_date'] >= date]
+                        last_inspection = post_permit.iloc[0]
+                        last_inspection_datetime = last_inspection['insp_date']
+                        last_inspection_number = last_inspection['insp_n']
+                        last_inspection_type = last_inspection['type_desc']
+                    else:
+                        print('Last inspection date is unknown')
+                        last_inspection_type = 'No data about the last inspection'
+                        last_inspection_datetime = dt.datetime(year=2019, month=7, day=12, hour=0, minute=0, second=0)
                     hubspot_timestamp = int(last_inspection_datetime.timestamp() * 1000)
                     # update the deal parameters last_inspection and last_inspection_date here
                     result = hubspot.deals.update_a_deal_oauth(dealId, {'last_inspection': last_inspection_type.title(),
