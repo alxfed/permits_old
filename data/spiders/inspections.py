@@ -37,7 +37,7 @@ def not_found(response):
 class InspListCSpider(CSVFeedSpider):
     name = 'inspections'
     allowed_domains = ['webapps1.chicago.gov']
-    start_urls = ['file:///home/alxfed/archive/deals_to_inspect.csv']
+    start_urls = ['file:///home/alxfed/archive/deals_downloaded.csv']
     headers = ['dealId', 'isDeleted',
                'associatedVids', 'associatedTicketIds', 'associatedCompanyIds', 'associatedDealIds',
                'dealname', 'closedate', 'amount', 'pipeline', 'dealstage',
@@ -53,8 +53,11 @@ class InspListCSpider(CSVFeedSpider):
 
     def parse_row(self, response, row):
         address = ''
+        keys = row.keys()
         header_start = self.headers[0]
         if row[header_start].startswith(header_start):
+            yield None
+        elif not row['permit_']:
             yield None
         else:
             if row['dealname'].startswith('RA ') or row['dealname'].startswith('NC '):
