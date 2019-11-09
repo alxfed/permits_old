@@ -38,9 +38,11 @@ class InspListCSpider(CSVFeedSpider):
     name = 'inspections'
     allowed_domains = ['webapps1.chicago.gov']
     start_urls = ['file:///home/alxfed/archive/deals_to_inspect.csv']
-    headers = ['dealId', 'isDeleted', 'associatedVids', 'associatedTicketIds', 'associatedCompanyIds',
-               'associatedDealIds', 'dealname', 'closedate', 'amount', 'pipeline', 'dealstage',
-               'permit_issue_date', 'permit_', 'permit', 'permit_type', 'work_descrption']
+    headers = ['dealId', 'isDeleted',
+               'associatedVids', 'associatedTicketIds', 'associatedCompanyIds', 'associatedDealIds',
+               'dealname', 'closedate', 'amount', 'pipeline', 'dealstage',
+               'permit_issue_date', 'permit_', 'permit', 'permit_type', 'work_descrption',
+               'last_inspection', 'last_inspection_date', 'insp_n', 'insp_note']
 
     INSPECTIONS_URL = 'https://webapps1.chicago.gov/buildingrecords/doSearch'
     VALIDATE_URL = 'https://webapps1.chicago.gov/buildingrecords/validateaddress'
