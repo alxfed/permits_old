@@ -2,7 +2,7 @@
 """...
 """
 from .constants import *
-from requests import Request, Session
+from requests import Request, Session, get
 
 
 def all_chicago_datasets():
@@ -11,11 +11,15 @@ def all_chicago_datasets():
     request = Request(method='GET', url=DISCOVERY_API_URL, params=params)
     prepped = request.prepare()
     response = session.send(prepped)
-    return response.json()
+    return response.json()['results']
 
+
+def metadata_for_dataset(four_by_four):
+    params = {'ids': four_by_four}
+    response = get(url=DISCOVERY_API_URL, params=params)
+    return response.json()['results']
 
 def main():
-    all_datasets = all_chicago_datasets()
     print('ok')
     return
 
