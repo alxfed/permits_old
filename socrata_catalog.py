@@ -3,6 +3,9 @@
 """
 from socradata import meta
 import pandas as pd
+import numpy as np
+from datetime import datetime
+
 
 
 def main():
@@ -19,10 +22,14 @@ def main():
     # 
     '''
     metadata = meta.metadata_for_dataset('ydr8-5enu')
+    datatypes_dict = {'text': object, 'calendar_date': np.datetime64, 'number': np.float64, 'point': object}
+    # there are also np.float32, np.int32 and np.int64,
+    # inp = pd.read_json(metadata, typ='series')
     resource = metadata[0]['resource']
     name    = resource["name"]
     id      = resource["id"]
     update  = resource['data_updated_at']
+    data_updated = datetime.strptime(update, '%Y-%m-%dT%H:%M:%S.000Z')
     columns_names = resource["columns_name"]
     column_fields_names = resource["columns_field_name"]
     columns_data_types = resource['columns_datatype']
