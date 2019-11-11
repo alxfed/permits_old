@@ -7,6 +7,7 @@ import requests as rq
 # discovery by id: GET http://api.us.socrata.com/api/catalog/v1?ids=ydr8-5enu
 # discovery by domain: GET http://api.us.socrata.com/api/catalog/v1?domains=data.cityofchicago.org&search_context=data.cityofchicago.org
 DISCOVERY_API_URL = 'http://api.us.socrata.com/api/catalog/v1'
+CHICAGO_RESOURCE_URL = 'data.cityofchicago.org'
 
 def main():
     return
