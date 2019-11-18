@@ -5,6 +5,8 @@ import pandas as pd
 from datetime import datetime
 import numpy as np
 from numpy import nan
+import sqlalchemy as sqlalc
+import unicodedata
 
 
 def dateparse(x):
@@ -25,7 +27,21 @@ def main():
                                                  'secondary_insurance_expr'],
                                     date_parser=dateparse,
                                     dtype=object)
-    print('ok')
+    # gen_contractors['address'].str.encode('UTF-8')
+    # gen_contractors.replace(u'\xa0', u' ', inplace=True)
+    all_rows = []
+    for index, contractor in gen_contractors.iterrows():
+        row = {}
+        address = contractor['address']
+        street_address, city, state_zip = address.split('\xa0\xa0')
+        state, zip = state_zip.split('\xa0')
+        # ).replace(u'\xa0', u' ')
+        contractor['address'] = address
+        phone = contractor['phone'].replace('x', '')
+        contractor['phone'] = phone
+
+    conn = sqlalc.create_engine('sqlite:////home/alxfed/dbase/home.sqlite')
+    gen_contractors.to_sql(name='licensed_general_contractors', con=conn, if_exists='replace')
     return
 
 
