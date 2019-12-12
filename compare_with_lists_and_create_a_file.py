@@ -50,7 +50,7 @@ def main():
                                        'work_descrption']
     general_contractors_file_path   = '/home/alxfed/archive/licensed_general_contractors.csv'
     output_file_path                = '/home/alxfed/archive/deals_to_create_for_new_permits.csv'
-    not_to_create_file_path           = '/home/alxfed/archive/deals_not_to_create_in_new_permits.csv'
+    not_to_create_file_path         = '/home/alxfed/archive/deals_not_to_create_in_new_permits.csv'
 
     input_perm      = pd.read_csv(origin_file_path, dtype=object)
     present_state  = pd.read_csv(present_state_file_path, dtype=object)
